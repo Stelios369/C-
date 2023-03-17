@@ -1,0 +1,211 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using MySql.Data.EntityFramework;
+using MySql.Data.Types;
+
+namespace project
+{
+    public partial class Form5 : Form
+    {
+        string connect_to_database = " ";
+        public Form5()
+        {
+            InitializeComponent();
+        }
+
+        private void Form5_Load(object sender, EventArgs e) //syndesh me thn bash kai prosthiki pinakwn kai dedomenwn
+        {
+            connect_to_database = "datasource=127.0.0.1;port=3306;username=root;password=;database=meteorologikos_stathmos;";
+            listView1.View = View.Details;
+            listView1.GridLines = true;
+            listView1.Columns.Add("polh", 100);
+            listView1.Columns.Add("hmera", 100);
+            listView1.Columns.Add("kairos", 100);
+            listView1.Columns.Add("hmeromhnia", 100);
+            listView1.Columns.Add("thermokrasia", 100);
+            listView1.Columns.Add("ygrasia", 100);
+            listView1.Columns.Add("mpofor", 100);
+
+            listView1.Show();
+        }
+
+        private void eksodos_Click(object sender, EventArgs e) //koympi gia eksodo
+        {
+            System.Windows.Forms.Application.Exit();
+        }
+
+        private void pisw_Click(object sender, EventArgs e) //koympi gia to basiko menu 
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
+        }
+
+        private void city_TextChanged(object sender, EventArgs e)
+        {
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(city.Text, "^[a-zA-Z]+$")) //elegxos an o xrhsths dwsei xarakthra h arithmo an dwsei arithmo tote petaei error
+            {
+            }
+            else
+            {
+                
+                MessageBox.Show("Enter only Alphabets");
+              
+
+            }
+        }
+
+        private void day_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(day.Text, "^[a-zA-Z]+$")) //elegxos an o xrhsths dwsei xarakthra h arithmo an dwsei arithmo tote petaei error
+            {
+            }
+            else
+            {
+              
+                MessageBox.Show("Enter only Alphabets");
+            
+
+            }
+        }
+
+        private void weather_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(weather.Text, "^[a-zA-Z]+$")) //elegxos an o xrhsths dwsei xarakthra h arithmo an dwsei arithmo tote petaei error
+            {
+            }
+            else
+            {
+              
+                MessageBox.Show("Enter only Alphabets");
+                
+
+            }
+        }
+
+        private void date_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void temperature_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(temperature.Text, "[^0-9]")) //elegxos an o xrhsths dwsei xarakthra h arithmo an dwsei xarakthra tote petaei error
+            {
+                MessageBox.Show("Please enter only numbers.");
+               
+            }
+
+         
+        }
+
+        private void humidity_TextChanged(object sender, EventArgs e)
+        {
+         
+        }
+
+        private void bofor_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(bofor.Text, "[^0-9]")) //elegxos an o xrhsths dwsei xarakthra h arithmo an dwsei xarakthra tote petaei error
+            {
+                MessageBox.Show("Please enter only numbers.");
+             
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //elegxos an kapoio apo ta pedio toy xrhsth exei lathos stoixeia tote tha emfanisei to mynhma alliws tha treksei swsta to programma
+            if (System.Text.RegularExpressions.Regex.IsMatch(temperature.Text, "[^0-9]") || System.Text.RegularExpressions.Regex.IsMatch(bofor.Text, "[^0-9]") || System.Text.RegularExpressions.Regex.IsMatch(weather.Text, "^[a-zA-Z]+$") || System.Text.RegularExpressions.Regex.IsMatch(day.Text, "^[a-zA-Z]+$") || System.Text.RegularExpressions.Regex.IsMatch(city.Text, "^[a-zA-Z]+$"))
+            {
+                MessageBox.Show("kapoio apo ta pedia periexei lathos stoixei elegkse ta ksana");
+
+            }
+            else
+            {
+
+                if (city.Text != "" && day.Text != "" && date.Text != "" && weather.Text != "" && temperature.Text != "" && humidity.Text != "" && bofor.Text != "")
+                {
+                    
+                    //query gia na parei ths times apo ta pedia kai na ths prosthesei sthn bash                                                                                                                                                                   
+                    String query = "INSERT INTO visualstudio_station(polh,hmera,kairos,hmeromhnia,thermokrasia,ygrasia,mpofor) VALUES('" + city.Text + "','" + day.Text + "','" + weather.Text + "','" + date.Text + "','" + temperature.Text + "','" + humidity.Text + "','" + bofor.Text + "')";
+                    MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+                    MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+                    commandDatabase.CommandTimeout = 60;
+                    try
+                    {
+                        databaseConnection.Open();
+                        MySqlDataReader myReader = commandDatabase.ExecuteReader();
+                        MessageBox.Show("succesfully registered");
+                        databaseConnection.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+
+                else
+                {
+                    MessageBox.Show("kapoio pedio einai adeio symplhrwse ola ta pedia");
+
+                }
+                String query2 = "SELECT * FROM visualstudio_station WHERE visualstudio_station.polh!='thessaloniki' AND  visualstudio_station.polh!='xalkidikh' AND visualstudio_station.polh!='athina'";
+                MySqlConnection databaseConnection2 = new MySqlConnection(connect_to_database);
+                MySqlCommand commandDatabase2 = new MySqlCommand(query2, databaseConnection2);
+                commandDatabase2.CommandTimeout = 60;
+                MySqlDataReader reader;
+                databaseConnection2.Open(); //anoigma ths bashs
+                reader = commandDatabase2.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        //Add items in the listview
+                        string[] arr = new string[7];
+                        ListViewItem itm;
+                        //Add first item
+                        arr[0] = reader.GetString(0);
+                        arr[1] = reader.GetString(1);
+                        arr[2] = reader.GetString(2);
+                        arr[3] = reader.GetString(3);
+                        arr[4] = reader.GetString(4);
+                        arr[5] = reader.GetString(5);
+                        arr[6] = reader.GetString(6);
+                        itm = new ListViewItem(arr);
+                        listView1.Items.Add(itm);
+
+                    }
+
+
+                }
+                else
+                {
+                    MessageBox.Show("den brethikan dedomena");
+                    databaseConnection2.Close();
+                }
+
+
+            }
+
+
+        }
+
+
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
+    }
+}
