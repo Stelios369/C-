@@ -93,6 +93,6 @@ namespace Calculator
             result.Clear();
         }
 
-        
+      
     }
 }
