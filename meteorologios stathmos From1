@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace project
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void thessaloniki_Click(object sender, EventArgs e)   //phgainei sthn forma ths thessalonikhs gia na dei o xrhsths ton kairo sthn thessaloniki
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+            this.Hide();
+
+
+        }
+
+        private void athina_Click(object sender, EventArgs e) //phgainei sthn forma ths athinas gia na dei o xrhsths ton kairo sthn athina
+        {
+            Form3 form3 = new Form3();
+            form3.Show();
+            this.Hide();
+        }
+
+        private void xalkidikh_Click(object sender, EventArgs e) //phgainei sthn forma ths xalkidikhs gia na dei o xrhsths ton kairo sthn xalkidikh
+        {
+            Form4 form4 = new Form4();
+            form4.Show();
+            this.Hide();
+
+        }
+
+        private void exit1_Click(object sender, EventArgs e)  //koympi gia eksodo apo to programma 
+        {
+            System.Windows.Forms.Application.Exit();
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) //phgaineii sthn forma 5 gia na dwsei o xrhsths ton diko toy kairo
+        {
+            Form5 form5 = new Form5();
+            form5.Show();
+            this.Hide();
+
+        }
+    }
+}
