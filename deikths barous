@@ -1,0 +1,83 @@
+
+
+create_command("Langschwert/height", "Langschwert show height", "lw_show_height = lw_show_height + 1", "", "")
+
+local lw_height = dataref_table("sim/cockpit2/gauges/indicators/altitude_ft_pilot", "readonly")
+local lw_show_heights = 0  			
+local lw_xheight = 400 				
+local lw_yheight = 20 			
+local lw_xPositionOfH = 0 		
+local lw_yPositionOfH = 630			
+local lw_heightbox_width = 160
+local lw_box_hight = 20		
+local lw_letter = 10		
+local lw_done = 0				
+local lw_heightctr = 0		
+local lw_heightson = 0
+local lw_meters = 0
+local lw_metermult = 0.3048
+local lw_hdrag = 0			
+
+
+function ask_mouse_heights()
+
+
+	if lw_show_heights == 0 and lw_done == 0 and MOUSE_X > lw_xPositionOfH and MOUSE_X < lw_xPositionOfH + lw_letter and MOUSE_Y > lw_yPositionOfH and MOUSE_Y < lw_yPositionOfH + lw_letter and MOUSE_STATUS == "down" then
+		lw_show_heights = 1
+		lw_done = 1
+	end
+
+	
+	if lw_show_heights == 1 and lw_done == 0 and MOUSE_X > lw_xheight + lw_heightbox_width and MOUSE_X < lw_xheight + lw_heightbox_width + lw_letter and MOUSE_Y > lw_yheight and MOUSE_Y < lw_yheight + lw_letter and MOUSE_STATUS == "down" then
+		lw_show_heights = 0
+		lw_done = 1
+	end
+
+
+	if lw_show_heights == 1 and lw_hdrag == 0 and	MOUSE_X > lw_xheight and MOUSE_X < lw_xheight + lw_heightbox_width and MOUSE_Y > lw_yheight and MOUSE_Y < lw_yheight + lw_letter then
+		RESUME_MOUSE_CLICK = true
+		lw_hdrag = 1
+	end
+
+ 	if lw_show_heights == 1 and lw_hdrag == 1 and MOUSE_STATUS == "drag" then
+		lw_xheight = MOUSE_X
+		lw_yheight = MOUSE_Y
+	else
+
+		lw_hdrag = 0
+	end
+	
+	
+	if 	lw_done == 1 then
+		lw_done = 0
+	end
+
+end
+
+		
+function printheight()
+
+	if lw_show_heights > 1 then
+		lw_show_heights = 0
+	end
+	
+	if lw_show_heights == 0 then
+	
+		draw_string(lw_xPositionOfH, lw_yPositionOfH, "H", "white" )
+	else
+
+		draw_string(lw_xheight + lw_heightbox_width, lw_yheight, "x", "red" )
+	end
+
+	if lw_show_heights == 1 then
+		lw_meters = lw_height[0] * lw_metermult
+		draw_string(lw_xheight, lw_yheight, math.floor(lw_height[0]).." feet     "..math.floor(lw_meters + 0.5).." meters", "green" )
+	end
+end
+
+do_on_mouse_click("ask_mouse_heights()")
+do_every_draw('printheight()')
+
+
+
+
