@@ -1,0 +1,392 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using MySql.Data.EntityFramework;
+using MySql.Data.Types;
+
+namespace project
+{
+    public partial class Form2 : Form
+    {
+        string connect_to_database=" ";
+        public Form2()
+        {
+          
+            InitializeComponent();
+        
+        }
+
+        private void exit2_Click(object sender, EventArgs e) //koympi gia eksodo apo to programma
+        {
+
+            System.Windows.Forms.Application.Exit();
+
+        }
+
+        private void pisw1_Click(object sender, EventArgs e)  //koympi gia na paei sto basiko menu dhladh sthn forma 1 kai na epileksei o xrhsths thn polh poy thelei na dei ton kario
+        {
+
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
+
+        }
+
+      
+        private void Form2_Load(object sender, EventArgs e) //syndesh me thn bash kai prosthiki pinakwn kai dedomenwn
+        {
+
+            connect_to_database = "datasource=127.0.0.1;port=3306;username=root;password=;database=meteorologikos_stathmos;";
+            listView1.View = View.Details;
+            listView1.GridLines = true;
+            listView1.Columns.Add("polh", 100);
+            listView1.Columns.Add("hmera", 100);
+            listView1.Columns.Add("kairos", 100);
+            listView1.Columns.Add("hmeromhnia", 100);
+            listView1.Columns.Add("thermokrasia", 100);
+            listView1.Columns.Add("ygrasia", 100);
+            listView1.Columns.Add("mpofor", 100);
+        
+            listView1.Show();
+           
+      
+        }
+
+
+       
+    
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+
+        }
+
+        private void deytera_Click(object sender, EventArgs e) //an o xrhsths pathsei to koympi deytera tote tha emfanistei o kairos ths deyteras
+        {
+            listView1.Items.Clear();     //kanw clear to listview gia na mhn exei kai ton proyhgoymeno kairo apo allo koympi px ton kairo ths triths
+            //kai probolh twn eggrafwn 
+            string query = "SELECT * FROM  visualstudio_station WHERE visualstudio_station.hmera='deytera' AND visualstudio_station.polh='thessaloniki' "; 
+            MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+            databaseConnection.Open(); //anoigma ths bashs
+            reader = commandDatabase.ExecuteReader();
+            
+            if (reader.HasRows)    
+            {
+                while (reader.Read())
+                {
+                    //Add items in the listview
+                    string[] arr = new string[7];
+                    ListViewItem itm;
+                    //Add first item
+                    arr[0] = reader.GetString(0);
+                    arr[1] = reader.GetString(1);
+                    arr[2] = reader.GetString(2);
+                    arr[3] = reader.GetString(3);
+                    arr[4] = reader.GetString(4);
+                    arr[5] = reader.GetString(5);
+                    arr[6] = reader.GetString(6);
+
+                    itm = new ListViewItem(arr);
+                    listView1.Items.Add(itm);
+
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("den brethikan dedomena");
+                databaseConnection.Close();
+            }
+
+
+
+
+        }
+
+        private void trith_Click(object sender, EventArgs e)
+        {
+            //an o xrhsths pathsei to koympi trith tote tha emfanistei o kairos ths triths
+            //kanw clear to listview gia na mhn exei kai ton proyhgoymeno kairo 
+            //kai probolh twn eggrafwn
+            listView1.Items.Clear();
+            string query = "SELECT * FROM  visualstudio_station WHERE visualstudio_station.hmera='trith' AND visualstudio_station.polh='thessaloniki' ";
+            MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+            databaseConnection.Open();  //anoigma ths bashs
+            reader = commandDatabase.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    //Add items in the listview
+                    string[] arr = new string[7];
+                    ListViewItem itm;
+                    //Add first item
+                    arr[0] = reader.GetString(0);
+                    arr[1] = reader.GetString(1);
+                    arr[2] = reader.GetString(2);
+                    arr[3] = reader.GetString(3);
+                    arr[4] = reader.GetString(4);
+                    arr[5] = reader.GetString(5);
+                    arr[6] = reader.GetString(6);
+
+                    itm = new ListViewItem(arr);
+                    listView1.Items.Add(itm);
+                    
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("den brethikan dedomena");
+                databaseConnection.Close();
+            }
+        }
+
+        private void tetarth_Click(object sender, EventArgs e)
+        {
+            //an o xrhsths pathsei to koympi trith tote tha emfanistei o kairos ths triths
+            //kanw clear to listview gia na mhn exei kai ton proyhgoymeno kairo 
+            //kai probolh twn eggrafwn
+            listView1.Items.Clear();
+            string query = "SELECT * FROM  visualstudio_station WHERE visualstudio_station.hmera='tetarth' AND visualstudio_station.polh='thessaloniki' ";
+            MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+            databaseConnection.Open();   //anoigma ths bashs
+            reader = commandDatabase.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    //Add items in the listview
+                    string[] arr = new string[7];
+                    ListViewItem itm;
+                    //Add first item
+                    arr[0] = reader.GetString(0);
+                    arr[1] = reader.GetString(1);
+                    arr[2] = reader.GetString(2);
+                    arr[3] = reader.GetString(3);
+                    arr[4] = reader.GetString(4);
+                    arr[5] = reader.GetString(5);
+                    arr[6] = reader.GetString(6);
+
+                    itm = new ListViewItem(arr);
+                    listView1.Items.Add(itm);
+
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("den brethikan dedomena");
+                databaseConnection.Close();
+            }
+        }
+
+        private void pempth_Click(object sender, EventArgs e)
+        {
+            //an o xrhsths pathsei to koympi trith tote tha emfanistei o kairos ths triths
+            //kanw clear to listview gia na mhn exei kai ton proyhgoymeno kairo 
+            //kai probolh twn eggrafwn
+            listView1.Items.Clear();
+            string query = "SELECT * FROM  visualstudio_station WHERE visualstudio_station.hmera='pempth' AND visualstudio_station.polh='thessaloniki' ";
+            MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+            databaseConnection.Open(); //anoigma ths bashs
+            reader = commandDatabase.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    //Add items in the listview
+                    string[] arr = new string[7];
+                    ListViewItem itm;
+                    //Add first item
+                    arr[0] = reader.GetString(0);
+                    arr[1] = reader.GetString(1);
+                    arr[2] = reader.GetString(2);
+                    arr[3] = reader.GetString(3);
+                    arr[4] = reader.GetString(4);
+                    arr[5] = reader.GetString(5);
+                    arr[6] = reader.GetString(6);
+
+                    itm = new ListViewItem(arr);
+                    listView1.Items.Add(itm);
+
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("den brethikan dedomena");
+                databaseConnection.Close();
+            }
+        }
+
+        private void paraskeyh_Click(object sender, EventArgs e)
+        {
+            //an o xrhsths pathsei to koympi trith tote tha emfanistei o kairos ths triths
+            //kanw clear to listview gia na mhn exei kai ton proyhgoymeno kairo 
+            //kai probolh twn eggrafwn
+            listView1.Items.Clear();
+            string query = "SELECT * FROM  visualstudio_station WHERE visualstudio_station.hmera='paraskeyh' AND visualstudio_station.polh='thessaloniki' ";
+            MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+            databaseConnection.Open();   //anoigma ths bashs
+            reader = commandDatabase.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    //Add items in the listview
+                    string[] arr = new string[7];
+                    ListViewItem itm;
+                    //Add first item
+                    arr[0] = reader.GetString(0);
+                    arr[1] = reader.GetString(1);
+                    arr[2] = reader.GetString(2);
+                    arr[3] = reader.GetString(3);
+                    arr[4] = reader.GetString(4);
+                    arr[5] = reader.GetString(5);
+                    arr[6] = reader.GetString(6);
+
+                    itm = new ListViewItem(arr);
+                    listView1.Items.Add(itm);
+
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("den brethikan dedomena");
+                databaseConnection.Close();
+            }
+        }
+
+        private void sabbato_Click(object sender, EventArgs e)
+        {
+            //an o xrhsths pathsei to koympi trith tote tha emfanistei o kairos ths triths
+            //kanw clear to listview gia na mhn exei kai ton proyhgoymeno kairo 
+            //kai probolh twn eggrafwn
+            listView1.Items.Clear();
+            string query = "SELECT * FROM  visualstudio_station WHERE visualstudio_station.hmera='sabbato' AND visualstudio_station.polh='thessaloniki' ";
+            MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+            databaseConnection.Open();
+            reader = commandDatabase.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    //Add items in the listview
+                    string[] arr = new string[7];
+                    ListViewItem itm;
+                    //Add first item
+                    arr[0] = reader.GetString(0);
+                    arr[1] = reader.GetString(1);
+                    arr[2] = reader.GetString(2);
+                    arr[3] = reader.GetString(3);
+                    arr[4] = reader.GetString(4);
+                    arr[5] = reader.GetString(5);
+                    arr[6] = reader.GetString(6);
+
+                    itm = new ListViewItem(arr);
+                    listView1.Items.Add(itm);
+
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("den brethikan dedomena");
+                databaseConnection.Close();
+            }
+        }
+
+        private void kyriakh_Click(object sender, EventArgs e)
+        {
+            //an o xrhsths pathsei to koympi trith tote tha emfanistei o kairos ths triths
+            //kanw clear to listview gia na mhn exei kai ton proyhgoymeno kairo 
+            //kai probolh twn eggrafwn
+            listView1.Items.Clear();
+            string query = "SELECT * FROM  visualstudio_station WHERE visualstudio_station.hmera='kyriakh' AND visualstudio_station.polh='thessaloniki' ";
+            MySqlConnection databaseConnection = new MySqlConnection(connect_to_database);
+            MySqlCommand commandDatabase = new MySqlCommand(query, databaseConnection);
+            commandDatabase.CommandTimeout = 60;
+            MySqlDataReader reader;
+            databaseConnection.Open();    //anoigma ths bashs
+            reader = commandDatabase.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    //Add items in the listview
+                    string[] arr = new string[7];
+                    ListViewItem itm;
+                    //Add first item
+                    arr[0] = reader.GetString(0);
+                    arr[1] = reader.GetString(1);
+                    arr[2] = reader.GetString(2);
+                    arr[3] = reader.GetString(3);
+                    arr[4] = reader.GetString(4);
+                    arr[5] = reader.GetString(5);
+                    arr[6] = reader.GetString(6);
+
+                    itm = new ListViewItem(arr);
+                    listView1.Items.Add(itm);
+
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("den brethikan dedomena");
+                databaseConnection.Close();
+            }
+        }
+    }
+
+
+
+
+}
+
+
+        
+
+
+    
