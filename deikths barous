@@ -1,83 +1,109 @@
 
 
-create_command("Langschwert/height", "Langschwert show height", "lw_show_height = lw_show_height + 1", "", "")
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-local lw_height = dataref_table("sim/cockpit2/gauges/indicators/altitude_ft_pilot", "readonly")
-local lw_show_heights = 0  			
-local lw_xheight = 400 				
-local lw_yheight = 20 			
-local lw_xPositionOfH = 0 		
-local lw_yPositionOfH = 630			
-local lw_heightbox_width = 160
-local lw_box_hight = 20		
-local lw_letter = 10		
-local lw_done = 0				
-local lw_heightctr = 0		
-local lw_heightson = 0
-local lw_meters = 0
-local lw_metermult = 0.3048
-local lw_hdrag = 0			
+namespace WebBrowser2021
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
 
+        private void go_Click(object sender, EventArgs e)
+        {
+            WebBrowser web = tabControl1.SelectedTab.Controls[0] as WebBrowser;
 
-function ask_mouse_heights()
+            if (web != null)
+                web.Navigate(url.Text);
 
+           // if (!string.IsNullOrWhiteSpace(url.Text))
+               // webBrowser.Navigate(url.Text);
 
-	if lw_show_heights == 0 and lw_done == 0 and MOUSE_X > lw_xPositionOfH and MOUSE_X < lw_xPositionOfH + lw_letter and MOUSE_Y > lw_yPositionOfH and MOUSE_Y < lw_yPositionOfH + lw_letter and MOUSE_STATUS == "down" then
-		lw_show_heights = 1
-		lw_done = 1
-	end
+        }
 
-	
-	if lw_show_heights == 1 and lw_done == 0 and MOUSE_X > lw_xheight + lw_heightbox_width and MOUSE_X < lw_xheight + lw_heightbox_width + lw_letter and MOUSE_Y > lw_yheight and MOUSE_Y < lw_yheight + lw_letter and MOUSE_STATUS == "down" then
-		lw_show_heights = 0
-		lw_done = 1
-	end
+        private void url_KeyPress(object sender, KeyPressEventArgs e)
+        {
 
+            if(e.KeyChar == (Char)13)
+            {
+                WebBrowser web = tabControl1.SelectedTab.Controls[0] as WebBrowser;
 
-	if lw_show_heights == 1 and lw_hdrag == 0 and	MOUSE_X > lw_xheight and MOUSE_X < lw_xheight + lw_heightbox_width and MOUSE_Y > lw_yheight and MOUSE_Y < lw_yheight + lw_letter then
-		RESUME_MOUSE_CLICK = true
-		lw_hdrag = 1
-	end
+                if (web != null)
+                    web.Navigate(url.Text);
+            }
+        }
 
- 	if lw_show_heights == 1 and lw_hdrag == 1 and MOUSE_STATUS == "drag" then
-		lw_xheight = MOUSE_X
-		lw_yheight = MOUSE_Y
-	else
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            webBrowser.Refresh();
+        }
 
-		lw_hdrag = 0
-	end
-	
-	
-	if 	lw_done == 1 then
-		lw_done = 0
-	end
+        private void back_Click(object sender, EventArgs e)
+        {
+            WebBrowser web = tabControl1.SelectedTab.Controls[0] as WebBrowser;
 
-end
+            if (web.CanGoBack)
+                web.GoBack();
+               
+        }
 
-		
-function printheight()
+        private void forward_Click(object sender, EventArgs e)
+        {
+            WebBrowser web = tabControl1.SelectedTab.Controls[0] as WebBrowser;
 
-	if lw_show_heights > 1 then
-		lw_show_heights = 0
-	end
-	
-	if lw_show_heights == 0 then
-	
-		draw_string(lw_xPositionOfH, lw_yPositionOfH, "H", "white" )
-	else
+            if (web.CanGoForward)
+                web.GoForward();
+        }
 
-		draw_string(lw_xheight + lw_heightbox_width, lw_yheight, "x", "red" )
-	end
+        WebBrowser webtab = null;
+        private void newTab_Click(object sender, EventArgs e)
+        {
+            TabPage tab = new TabPage();   
+            tab.Text = "New tab";  
+            tabControl1.Controls.Add(tab);
+            tabControl1.SelectTab(tabControl1.TabCount - 1);
 
-	if lw_show_heights == 1 then
-		lw_meters = lw_height[0] * lw_metermult
-		draw_string(lw_xheight, lw_yheight, math.floor(lw_height[0]).." feet     "..math.floor(lw_meters + 0.5).." meters", "green" )
-	end
-end
+            webtab = new WebBrowser()
+            {
+                ScriptErrorsSuppressed = true
+               
+            };
 
-do_on_mouse_click("ask_mouse_heights()")
-do_every_draw('printheight()')
+            webtab.Parent = tab;
+            webtab.Navigate("http://www.google.com");
+            webtab.Dock = DockStyle.Fill;
+            webtab.DocumentCompleted += WebTab_DocumentCompleted;
+        }
 
+        private void webBrowser_tab_name(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            tabControl1.SelectedTab.Text = webBrowser.DocumentTitle;
+        }
+        private void url_TextChanged(object sender, EventArgs e)
+        {
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            webBrowser.DocumentCompleted += webBrowser_tab_name;
+        }
+        private void WebTab_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            tabControl1.SelectedTab.Text = webtab.DocumentTitle;
+        }
 
+        private void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
 
-
+        }
+    }
+}
